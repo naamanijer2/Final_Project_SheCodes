@@ -5,3 +5,6 @@ def main():
     favorite_ingredients = input("Please Enter up to 2 favorite ingredients: (for example - egg, tomato) ")
 
     userInput = UserInput(medical_restriction, favorite_ingredients)
+
+if __name__ == '__main__':
+    main()
