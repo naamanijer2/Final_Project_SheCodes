@@ -1,69 +1,86 @@
 import cur as cur
 import pymysql
 import pymysql.cursors
-import _mysq
+import random
+from collections import OrderedDict
+
 from sqlalchemy import create_engine
 import itertools
 import pandas as pd
 from Restriction import Restriction
 
 class SearchRecipes:
-    def __init__(self):
-        self.recipe_name1 = ""
-        self.recipe_name2 = ""
-        self.ingredients1 = ""
-        self.ingredients2 = ""
-        self.directions1 = ""
-        self.directions2 = ""
-        self.next_word = ""
-        self.keyWord1 = ""
+    def __init__(self, med_res_name="", fav_ingredients_list=[]):
+        self.suitable_recipes_num = []
+        self.final_recipes_num_to_return = []
+        self.keyWord1 = ''
+        self.keyWord2 = ''
+        self.keyWord3 = ''
+        self.med_res_name = med_res_name
+        self.fav_ingredients_list = fav_ingredients_list
+
+    def deleting_unnecessary(self, l1):
+        l2 = []
+        for i in l1:
+            if i not in l2:
+                l2.append(i)
+        return l2
 
     def searchFromTable(self):
-        restrictions = Restriction()
-        if restrictions.med_res_name == 'sugar-free':
+        if self.med_res_name == 'sugar-free':
             self.keyWord1 = 'sugar'
+            self.keyWord2 = 'substitute'
+        if self.med_res_name == 'gluten-free':
+            self.keyWord1 = 'flour'
+        if self.med_res_name == 'dairy-free':
+            self.keyWord1 = 'milk'
+            self.keyWord2 = 'non-dairy'
+            self.keyWord3 = 'cheese'
 
-        connection = pymysql.connect(host='127.0.0.1', user='root', password='196322Na!', db='recpies')
-        query = """ SELECT BO_INDEX FROM recpies.ingredients.ibd
-                WHERE BO_BEMERKUNG LIKE '%%%s%%' """ % self.keyWord1
+        connection = pymysql.connect(host='127.0.0.1', user='root', password='196322Na!', db='recpies') #connecting to mysql
         cur = connection.cursor()
-        cur.execute(query)
-        result_all = cur.fetchall()
-        print(result_all)
 
-        #engine = create_engine(self.keyWord1)
-        #sql = "SELECT * FROM recpies.recpies "
-        #sql2 = "SELECT * FROM recpies.ingredients"
+        query1 = "SELECT * FROM ingredients WHERE ingredients LIKE %s" #sql query to find medical restrictions
+        cur.execute(query1, ('%' + self.keyWord1 + '%'))
+        problematic_rec = cur.fetchall()
+        if self.keyWord3 != '':
+            cur.execute(query1, ('%' + self.keyWord3 + '%'))
+        problematic_rec = problematic_rec + cur.fetchall()
 
-        #if self.keyWord1 == sql:
-          #  if self.next_word == 'substitute':
-         #      pass
+        favourite_rec = () #define tuple
+        favourite_rec_num = []
+        for ingredient in self.fav_ingredients_list: #sql query to find the favorite ingredients
+            query2 = "SELECT * FROM ingredients WHERE ingredients LIKE %s"
+            cur.execute(query2, ('%' + ingredient + '%'))
+            favourite_rec = favourite_rec + cur.fetchall()
+        for i in favourite_rec:
+            favourite_rec_num.append(i[0])
 
-        #df = pd.read_sql_query(sql, engine)
-        #df.head()
+        #Ignoring exceptional cases where there are substitutes like sugar substitute
+        temp = []
+        for list in problematic_rec:
+            if self.keyWord2 in list[2] and self.keyWord2 != '':
+                pass
+            else:
+                temp.append(list[0])
 
+        forbidden_recipes_num = self.deleting_unnecessary(temp)
 
-    #def readRecipesFile(self):
-    #    with open("recipes.txt", 'r') as file:
-    #        next(file)
-    #        for line in file:
-    #            if "Ingredients" in line:
-    #                pass
+        print('problematic recipes: {}'.format(problematic_rec))
+        print('favourite recipes: {}'.format(favourite_rec))
+        print('forbidden recipes numbers: {}'.format(forbidden_recipes_num))
+        print('favourite recipes numbers: {}'.format(favourite_rec_num))
 
-    #        line = file.readlines()
-    #        line2 =""
-    #        if "Ingredients" in line:
-     #           if self.userInput.med_res() == 1:
-      #              while "Directions" not in line2 or "sugar" not in line2:
-       #                 line2 = file.next()
-        #            if "sugar" in line2:
-         #               pass
+        self.set_suitable_rec_list(favourite_rec_num, forbidden_recipes_num)
+        print('final suitable recipes: {}'.format(self.suitable_recipes_num))
+        self.select_random_recipes()
+        print('final recipes num to return: {}'.format(self.final_recipes_num_to_return))
+        #return (favourite_rec_num, forbidden_recipes_num)
 
-          #      if self.userInput.med_res() == 2:
-           #         while line2 != "flour" or line2 != "Directions":
-            #            line2 = file.next()
-             #   if self.userInput.med_res() == 3:
-              #      while line2 != "milk" or line2 != "Directions":
-               #         line2 = file.next()
+    def set_suitable_rec_list(self, favorite_rec_num, forbidden_recipes_num):
+        for i in favorite_rec_num:
+            if i not in forbidden_recipes_num:
+                self.suitable_recipes_num.append(i)
 
-            #if (line == "Ingredients"):
+    def select_random_recipes(self):
+        self.final_recipes_num_to_return = random.sample(self.suitable_recipes_num,2)
