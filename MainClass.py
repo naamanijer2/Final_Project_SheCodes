@@ -17,7 +17,7 @@ class MainClass(object):
 
         self.favorite_ingredients = input("Please Enter up to 2 favorite ingredients: (for example - egg, tomato) ")
         while (self.favorite_ingredients.isdigit()):
-            print("Wrong input! please try again...")
+            print("Wrong input! please try again..")
             self.favorite_ingredients = input("Please Enter up to 2 favorite ingredients: (for example - egg, tomato) ")
 
         restrictions = Restriction(self.medical_restriction, self.favorite_ingredients)
