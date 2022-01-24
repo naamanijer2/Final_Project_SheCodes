@@ -19,27 +19,20 @@ class SearchRecipes:
         self.med_res_name = med_res_name
         self.fav_ingredients_list = fav_ingredients_list
 
-    def deleting_unnecessary(self, l1):
-        l2 = []
-        for i in l1:
-            if i not in l2:
-                l2.append(i)
-        return l2
-
     def searchFromTable(self):
         if self.med_res_name == 'sugar-free':
             self.keyWord1 = 'sugar'
-            self.keyWord2 = 'substitute'
+            self.keyWord2 = ['substitute']
         if self.med_res_name == 'gluten-free':
             self.keyWord1 = 'flour'
+            self.keyWord2 = ['corn flour', 'almond flour', 'potato flour']
         if self.med_res_name == 'dairy-free':
             self.keyWord1 = 'milk'
-            self.keyWord2 = 'non-dairy'
+            self.keyWord2 = ['non-dairy']
             self.keyWord3 = 'cheese'
 
         connection = pymysql.connect(host='127.0.0.1', user='root', password='196322Na!', db='recpies') #connecting to mysql
         cur = connection.cursor()
-
         query1 = "SELECT * FROM ingredients WHERE ingredients LIKE %s" #sql query to find medical restrictions
         cur.execute(query1, ('%' + self.keyWord1 + '%'))
         problematic_rec = cur.fetchall()
@@ -59,12 +52,14 @@ class SearchRecipes:
         #Ignoring exceptional cases where there are substitutes like sugar substitute
         temp = []
         for list in problematic_rec:
-            if self.keyWord2 in list[2] and self.keyWord2 != '':
-                pass
-            else:
-                temp.append(list[0])
+            for i in self.keyWord2:
+                if i in list[2] and i != '':
+                    pass
+                else:
+                    temp.append(list[0])
 
         forbidden_recipes_num = self.deleting_unnecessary(temp)
+        favourite_rec_num = self.deleting_unnecessary(favourite_rec_num)
 
         print('problematic recipes: {}'.format(problematic_rec))
         print('favourite recipes: {}'.format(favourite_rec))
@@ -77,10 +72,20 @@ class SearchRecipes:
         print('final recipes num to return: {}'.format(self.final_recipes_num_to_return))
         #return (favourite_rec_num, forbidden_recipes_num)
 
+    def deleting_unnecessary(self, l1):
+        l2 = []
+        for i in l1:
+            if i not in l2:
+                l2.append(i)
+        return l2
+
     def set_suitable_rec_list(self, favorite_rec_num, forbidden_recipes_num):
         for i in favorite_rec_num:
             if i not in forbidden_recipes_num:
                 self.suitable_recipes_num.append(i)
 
     def select_random_recipes(self):
-        self.final_recipes_num_to_return = random.sample(self.suitable_recipes_num,2)
+        if len(self.suitable_recipes_num) > 2:
+            self.final_recipes_num_to_return = random.sample(self.suitable_recipes_num,2)
+        else:
+            self.final_recipes_num_to_return = self.suitable_recipes_num
