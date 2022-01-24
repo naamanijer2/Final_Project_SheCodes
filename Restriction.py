@@ -1,10 +1,11 @@
-class UserInput:
+class Restriction:
 
-    def __init__(self, medical_restriction, favorite_ingredients):
-
+    def __init__(self, medical_restriction="", favorite_ingredients=""):
         self.med_res = medical_restriction
         self.fav_ing = favorite_ingredients
         self.med_res_name = ""
+        self.fav_ingredients_list = []
+
 
     def get_med_res(self):
         return self.med_res
@@ -20,9 +21,6 @@ class UserInput:
         if self.med_res == '3':
             self.med_res_name = "dairy-free"
 
-    def fav_ing_list(self):
+    def set_fav_ing_list(self):
         fav_ing = self.fav_ing
-        ingredients = fav_ing.split(', ')
-        return ingredients
-
-
+        self.fav_ingredients_list = fav_ing.split(', ')
