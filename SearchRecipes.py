@@ -1,13 +1,7 @@
-import cur as cur
 import pymysql
 import pymysql.cursors
 import random
-from collections import OrderedDict
 
-from sqlalchemy import create_engine
-import itertools
-import pandas as pd
-from Restriction import Restriction
 
 class SearchRecipes:
     def __init__(self, med_res_name="", fav_ingredients_list=[]):
@@ -61,16 +55,18 @@ class SearchRecipes:
         forbidden_recipes_num = self.deleting_unnecessary(temp)
         favourite_rec_num = self.deleting_unnecessary(favourite_rec_num)
 
-        print('problematic recipes: {}'.format(problematic_rec))
-        print('favourite recipes: {}'.format(favourite_rec))
-        print('forbidden recipes numbers: {}'.format(forbidden_recipes_num))
-        print('favourite recipes numbers: {}'.format(favourite_rec_num))
+        #print('problematic recipes: {}'.format(problematic_rec))
+        #print('favourite recipes: {}'.format(favourite_rec))
+        #print('forbidden recipes numbers: {}'.format(forbidden_recipes_num))
+        #print('favourite recipes numbers: {}'.format(favourite_rec_num))
 
         self.set_suitable_rec_list(favourite_rec_num, forbidden_recipes_num)
-        print('final suitable recipes: {}'.format(self.suitable_recipes_num))
+        #print('final suitable recipes: {}'.format(self.suitable_recipes_num))
         self.select_random_recipes()
-        print('final recipes num to return: {}'.format(self.final_recipes_num_to_return))
+        #print('final recipes num to return: {}'.format(self.final_recipes_num_to_return))
         #return (favourite_rec_num, forbidden_recipes_num)
+        if self.final_recipes_num_to_return == []:
+            print("Sorry! No suitable recipes found...")
 
     def deleting_unnecessary(self, l1):
         l2 = []

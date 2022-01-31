@@ -1,6 +1,7 @@
 from Restriction import Restriction
 from SearchRecipes import SearchRecipes
 from RecipesOutput import RecipesOutput
+#from ToHTML import ToHTML
 
 class MainClass(object):
 
@@ -20,6 +21,8 @@ class MainClass(object):
             print("Wrong input! please try again..")
             self.favorite_ingredients = input("Please Enter up to 2 favorite ingredients: (for example - egg, tomato) ")
 
+        #toHTML = ToHTML()
+        #toHTML.createHTML()
         restrictions = Restriction(self.medical_restriction, self.favorite_ingredients)
         restrictions.set_med_res_name()
         restrictions.set_fav_ing_list()
@@ -27,6 +30,7 @@ class MainClass(object):
         searchRecipes.searchFromTable()
         recipesOutput = RecipesOutput(searchRecipes.final_recipes_num_to_return)
         recipesOutput.connect_to_mysql()
+
 
 
 
