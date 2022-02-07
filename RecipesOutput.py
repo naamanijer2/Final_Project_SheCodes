@@ -22,17 +22,25 @@ class RecipesOutput:
             cur.execute("SELECT ingredients FROM ingredients WHERE Idrecpie=(%s)", str(rec))
             self.recipe_ingredients.append(cur.fetchall())
 
+    def print_recipes(self):
         i = 0
         j = 0
+        dic = []
+
         while(i < len(self.recipe_name)):
             print(self.recipe_name[i][0] + ":\n" + "Ingredients:")
+            dic.append("<h1>"+self.recipe_name[i][0]+"</h1>")
+            dic.append("<h2>Ingredients:</h2>")
             k = 0
             while (len(self.recipe_ingredients[j]) > k):
                 print(self.recipe_ingredients[j][k][0])
+                dic.append(self.recipe_ingredients[j][k][0])
                 k += 1
             print("Directions:\n " + self.recipe_description[i][0])
+            dic.append("<h2>Directions:\n</h2> " + self.recipe_description[i][0])
             i += 1
             j += 1
             print("\n")
-
+            dic.append("\n")
+        return dic
 
