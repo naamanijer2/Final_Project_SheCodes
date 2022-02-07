@@ -1,6 +1,7 @@
 import pymysql
 import pymysql.cursors
 import random
+import base64
 
 
 class SearchRecipes:
@@ -25,7 +26,8 @@ class SearchRecipes:
             self.keyWord2 = ['non-dairy']
             self.keyWord3 = 'cheese'
 
-        connection = pymysql.connect(host='127.0.0.1', user='root', password='196322Na!', db='recpies') #connecting to mysql
+        password = input('Enter password: ')
+        connection = pymysql.connect(host='127.0.0.1', user='root', password=password, db='recpies') #connecting to mysql
         cur = connection.cursor()
         query1 = "SELECT * FROM ingredients WHERE ingredients LIKE %s" #sql query to find medical restrictions
         cur.execute(query1, ('%' + self.keyWord1 + '%'))
