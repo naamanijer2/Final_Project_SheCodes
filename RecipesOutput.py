@@ -41,6 +41,5 @@ class RecipesOutput:
             i += 1
             j += 1
             print("\n")
-            dic.append("\n")
         return dic
 
