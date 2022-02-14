@@ -1,8 +1,8 @@
 import pymysql
 import pymysql.cursors
+import pymysql.connections
+#import mysql.connector
 import random
-import base64
-
 
 class SearchRecipes:
     def __init__(self, med_res_name="", fav_ingredients_list=[]):
@@ -13,6 +13,20 @@ class SearchRecipes:
         self.keyWord3 = ''
         self.med_res_name = med_res_name
         self.fav_ingredients_list = fav_ingredients_list
+        self.connection = None
+
+    def connectToMysql(self):
+        password = input('Enter password: ')
+        self.connection = pymysql.connect(host='127.0.0.1', user='root', password=password, db='recpies')
+        cur = self.connection.cursor()
+        return cur
+
+    def addRateRecipe(self, rate, recName):
+        cur = self.connectToMysql()
+        query = "UPDATE recipes SET rate = rate + %s WHERE recName = %s"
+        cur.execute(query,(rate, recName))
+        #cur.execute(query)
+        self.connection.commit()
 
     def searchFromTable(self):
         if self.med_res_name == 'sugar-free':
@@ -26,9 +40,7 @@ class SearchRecipes:
             self.keyWord2 = ['non-dairy']
             self.keyWord3 = 'cheese'
 
-        password = input('Enter password: ')
-        connection = pymysql.connect(host='127.0.0.1', user='root', password=password, db='recpies') #connecting to mysql
-        cur = connection.cursor()
+        cur = self.connectToMysql()
         query1 = "SELECT * FROM ingredients WHERE ingredients LIKE %s" #sql query to find medical restrictions
         cur.execute(query1, ('%' + self.keyWord1 + '%'))
         problematic_rec = cur.fetchall()
@@ -57,16 +69,8 @@ class SearchRecipes:
         forbidden_recipes_num = self.deleting_unnecessary(temp)
         favourite_rec_num = self.deleting_unnecessary(favourite_rec_num)
 
-        #print('problematic recipes: {}'.format(problematic_rec))
-        #print('favourite recipes: {}'.format(favourite_rec))
-        #print('forbidden recipes numbers: {}'.format(forbidden_recipes_num))
-        #print('favourite recipes numbers: {}'.format(favourite_rec_num))
-
         self.set_suitable_rec_list(favourite_rec_num, forbidden_recipes_num)
-        #print('final suitable recipes: {}'.format(self.suitable_recipes_num))
         self.select_random_recipes()
-        #print('final recipes num to return: {}'.format(self.final_recipes_num_to_return))
-        #return (favourite_rec_num, forbidden_recipes_num)
         if self.final_recipes_num_to_return == []:
             print("Sorry! No suitable recipes found...")
 

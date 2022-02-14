@@ -37,13 +37,13 @@ class MainClass(object):
         if len(recipesOutput.recipe_name) > 1:
             rec2 = recipesOutput.recipe_name[1][0]
         rec_choose = input(f"Please select the recipe that you choose: 1-{rec1}, 2-{rec2}")
-        if rec_choose == 1:
+        if rec_choose == '1':
             self.rec_choose = rec1
         else:
             self.rec_choose = rec2
         self.rec_rate = input("Please rate the recipe between 1 to 5: ")
 
-
+        searchRecipes.addRateRecipe(self.rec_rate, self.rec_choose)
 
 if __name__ == '__main__':
     MainClass().main()

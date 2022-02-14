@@ -10,11 +10,9 @@ class RecipesOutput:
         self.recipes_numbers = recipes_numbers
 
     def connect_to_mysql(self):
+        ser = SearchRecipes("",[])
 
-        password = input('Enter password: ')
-        connection = pymysql.connect(host='127.0.0.1', user='root', password=password,
-                                     db='recpies')  # connecting to mysql
-        cur = connection.cursor()
+        cur = ser.connectToMysql()
         for rec in self.recipes_numbers:
             cur.execute("SELECT recName FROM recipes WHERE Idrecpie=(%s)", str(rec))
             self.recipe_name = self.recipe_name + cur.fetchall()
