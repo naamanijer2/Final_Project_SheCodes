@@ -11,7 +11,8 @@ class RecipesOutput:
 
     def connect_to_mysql(self):
 
-        connection = pymysql.connect(host='127.0.0.1', user='root', password='196322Na!',
+        password = input('Enter password: ')
+        connection = pymysql.connect(host='127.0.0.1', user='root', password=password,
                                      db='recpies')  # connecting to mysql
         cur = connection.cursor()
         for rec in self.recipes_numbers:

@@ -7,6 +7,8 @@ class MainClass(object):
     def __init__(self):
         self.medical_restriction = 0
         self.favorite_ingredients = ""
+        self.rec_choose = ""
+        self.rec_rate = ""
 
     def main(self):
 
@@ -30,7 +32,16 @@ class MainClass(object):
         recipesOutput.connect_to_mysql()
         recipesOutput.print_recipes()
 
-
+        rec2 = "None"
+        rec1 = recipesOutput.recipe_name[0][0]
+        if len(recipesOutput.recipe_name) > 1:
+            rec2 = recipesOutput.recipe_name[1][0]
+        rec_choose = input(f"Please select the recipe that you choose: 1-{rec1}, 2-{rec2}")
+        if rec_choose == 1:
+            self.rec_choose = rec1
+        else:
+            self.rec_choose = rec2
+        self.rec_rate = input("Please rate the recipe between 1 to 5: ")
 
 
 
