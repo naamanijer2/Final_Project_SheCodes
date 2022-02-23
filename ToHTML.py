@@ -3,15 +3,15 @@ from RecipesOutput import RecipesOutput
 from Restriction import Restriction
 from SearchRecipes import SearchRecipes
 
+
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def chooseRes():
     if request.method == 'POST':
         restriction = request.form['restriction']
         favIngredients = request.form['favIngredients']
-        if (restriction == None) or (favIngredients == None):
-            flash('Please fill in all fields!')
         return redirect(url_for('recipes', res = restriction, fav = favIngredients))
     else:
         return render_template('select.html')
@@ -29,6 +29,19 @@ def recipes(res,fav):
     op = recipesOutput.print_recipes()
     rec = '<br>'.join(op)
     return f"<p>{rec}</p>"
+
+
+@app.route('/recipes/rate')
+def rate():
+    if request.method == 'POST':
+        rate = request.form['rate']
+        return redirect(url_for('recipes/rate', r=rate))
+    else:
+        return render_template('rate.html')
+
+@app.route('/recipes/rate/<r>')
+def thanks():
+    return "Thank you for your vote!"
 
 
 if __name__ == '__main__':

@@ -32,6 +32,8 @@ class MainClass(object):
         recipesOutput.connect_to_mysql()
         recipesOutput.print_recipes()
 
+        if len(recipesOutput.recipe_name) < 1:
+            return
         rec2 = "None"
         rec1 = recipesOutput.recipe_name[0][0]
         if len(recipesOutput.recipe_name) > 1:

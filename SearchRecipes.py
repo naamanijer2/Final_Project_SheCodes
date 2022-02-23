@@ -25,7 +25,6 @@ class SearchRecipes:
         cur = self.connectToMysql()
         query = "UPDATE recipes SET rate = rate + %s WHERE recName = %s"
         cur.execute(query,(rate, recName))
-        #cur.execute(query)
         self.connection.commit()
 
     def searchFromTable(self):

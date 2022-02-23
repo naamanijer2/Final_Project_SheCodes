@@ -5,11 +5,22 @@
     <title>Selelct</title>
 </head>
 <body>
+    <h1>Custom Healthy Recipes</h1>
+    <h3>On this site you can search for a recipe that fits your medical restrictions,
+        and in addition will contain ingredients that you prefer. </h3>
     <form action="#" method="post">
-        <p>Please choose restriction number: 1 - Sugar-Free, 2 - Gluten-Free, 3 - Dairy-Free</p>
-        <p><input type="text" name="restriction" /><p>
-        <p>Please Enter up to 2 favorite ingredients: (for example - egg, tomato)</p>
-        <p><input type="text" name="favIngredients" /><p>
+         <p>
+            <fieldset>
+                <legend>Please choose restriction:<abbr title="This field is mandatory" aria-label="required"></abbr></legend>
+                <input type="radio" required name="restriction" id="r1" value="1"><label for="r1">Sugar-Free</label>
+                <input type="radio" required name="restriction" id="r2" value="2"><label for="r2">Gluten-Free</label>
+                <input type="radio" required name="restriction" id="r3" value="3"><label for="r2">Dairy-Free</label>
+            </fieldset>
+        </p>
+        <!--
+        -->
+        <p><label for = "t2">Please Enter up to 2 favorite ingredients: (for example - egg, tomato)</label>></p>
+        <p><input type="text" id = "t2" name="favIngredients" required/><p>
         <p><input type="submit" value="submit" /></p>
     </form>
 

@@ -28,7 +28,7 @@ class RecipesOutput:
 
         while(i < len(self.recipe_name)):
             print(self.recipe_name[i][0] + ":\n" + "Ingredients:")
-            dic.append("<h1>"+self.recipe_name[i][0]+"</h1>")
+            dic.append(f"<h1>{i+1}. "+self.recipe_name[i][0]+"</h1>")
             dic.append("<h2>Ingredients:</h2>")
             k = 0
             while (len(self.recipe_ingredients[j]) > k):
