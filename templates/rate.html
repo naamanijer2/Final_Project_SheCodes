@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rate</title>
+</head>
+<body>
+    <form action='#' method="post">
+        <fieldset>
+            <legend>Please select the recipe that you choose:<abbr title="This field is mandatory" aria-label="required"></abbr></legend>
+                <input type="radio" required name="recipe" id="r1" value="1"><label for="r1">1</label>
+                <input type="radio" required name="recipe" id="r2" value="2"><label for="r2">2</label>
+            <legend>Rate this recipe:</legend>
+            <table>
+            <tr>
+                <td><label for="1">1</label></td>
+                <td><label for="2">2</label></td>
+                <td><label for="3">3</label></td>
+                <td><label for="4">4</label></td>
+                <td><label for="5">5</label></td>
+            </tr>
+
+            <tr>
+              <td><input type="radio" name="radRating" value="5"
+                id="5" /></td>
+              <td><input type="radio" name="radRating" value="4" id="4" /></td>
+              <td><input type="radio" name="radRating" value="3"
+                id="3" /></td>
+              <td><input type="radio" name="radRating" value="2" id="2" /></td>
+              <td><input type="radio" name="radRating" value="1"
+                id="1" /></td>
+            </tr>
+          </table>
+
+          <input type="submit" value="Vote now" />
+
+        </fieldset>
+  </form>
+</body>
+</html>
