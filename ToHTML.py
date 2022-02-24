@@ -28,6 +28,7 @@ def recipes(res,fav):
     recipesOutput.connect_to_mysql()
     op = recipesOutput.print_recipes()
     rec = '<br>'.join(op)
+    #print the recipes to the HTML page
     return f"<p>{rec}</p>"
 
 

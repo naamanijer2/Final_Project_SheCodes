@@ -7,9 +7,9 @@ class RecipesOutput:
         self.recipe_description = ()
         self.recipes_numbers = recipes_numbers
 
+    #get the recipes details from MySql in order to print them
     def connect_to_mysql(self):
         ser = SearchRecipes("",[])
-
         cur = ser.connectToMysql()
         for rec in self.recipes_numbers:
             cur.execute("SELECT recName FROM recipes WHERE Idrecpie=(%s)", str(rec))
@@ -19,11 +19,11 @@ class RecipesOutput:
             cur.execute("SELECT ingredients FROM ingredients WHERE Idrecpie=(%s)", str(rec))
             self.recipe_ingredients.append(cur.fetchall())
 
+    # print the recipes
     def print_recipes(self):
         i = 0
         j = 0
         dic = []
-
         while(i < len(self.recipe_name)):
             print(self.recipe_name[i][0] + ":\n" + "Ingredients:")
             dic.append(f"<h1>{i+1}. "+self.recipe_name[i][0]+"</h1>")

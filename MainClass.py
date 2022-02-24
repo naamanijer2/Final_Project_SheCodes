@@ -1,3 +1,5 @@
+#The main class for the input, and call all the functions from the other classes.
+#combine between all classes
 from Restriction import Restriction
 from SearchRecipes import SearchRecipes
 from RecipesOutput import RecipesOutput
@@ -12,6 +14,7 @@ class MainClass(object):
 
     def main(self):
 
+        #user input
         self.medical_restriction = input("Please choose restriction number: 1 - Sugar-Free, 2 - Gluten-Free, 3 - Dairy-Free ")
         while ((self.medical_restriction != '1') ^ (self.medical_restriction != '2') ^ (self.medical_restriction != '3')):
             print("Wrong input! please try again...")
@@ -22,7 +25,7 @@ class MainClass(object):
             print("Wrong input! please try again..")
             self.favorite_ingredients = input("Please Enter up to 2 favorite ingredients: (for example - egg, tomato) ")
 
-
+        #call all functions from the classes
         restrictions = Restriction(self.medical_restriction, self.favorite_ingredients)
         restrictions.set_med_res_name()
         restrictions.set_fav_ing_list()
@@ -31,6 +34,7 @@ class MainClass(object):
         recipesOutput = RecipesOutput(searchRecipes.final_recipes_num_to_return)
         recipesOutput.connect_to_mysql()
         recipesOutput.print_recipes()
+
 
         if len(recipesOutput.recipe_name) < 1:
             return
