@@ -1,6 +1,4 @@
 from SearchRecipes import SearchRecipes
-import pymysql
-import pymysql.cursors
 
 class RecipesOutput:
     def __init__(self, recipes_numbers):

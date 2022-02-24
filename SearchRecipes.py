@@ -69,7 +69,8 @@ class SearchRecipes:
         favourite_rec_num = self.deleting_unnecessary(favourite_rec_num)
 
         self.set_suitable_rec_list(favourite_rec_num, forbidden_recipes_num)
-        self.select_random_recipes()
+        self.select_popular_random_recipes()
+
         if self.final_recipes_num_to_return == []:
             print("Sorry! No suitable recipes found...")
 
@@ -85,8 +86,18 @@ class SearchRecipes:
             if i not in forbidden_recipes_num:
                 self.suitable_recipes_num.append(i)
 
-    def select_random_recipes(self):
+    def select_popular_random_recipes(self):
+        rate_list = ()
+        cur = self.connectToMysql()
         if len(self.suitable_recipes_num) > 2:
-            self.final_recipes_num_to_return = random.sample(self.suitable_recipes_num,2)
+            for i in self.suitable_recipes_num:
+                cur.execute("SELECT rate FROM recipes WHERE Idrecpie = (%s)",i)
+                rate_list = rate_list + cur.fetchall()
+            rec_max_rate = max(rate_list)[0]
+            print(rec_max_rate)
+            self.final_recipes_num_to_return.append(rec_max_rate)
+            self.suitable_recipes_num.remove(rec_max_rate)
+            self.final_recipes_num_to_return = self.final_recipes_num_to_return+ random.sample(self.suitable_recipes_num,1)
+            print(self.final_recipes_num_to_return)
         else:
             self.final_recipes_num_to_return = self.suitable_recipes_num
