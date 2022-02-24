@@ -19,6 +19,7 @@ def chooseRes():
 
 @app.route('/recipes/<res>/<fav>')
 def recipes(res,fav):
+    #call all the functions from the classes
     restrictions = Restriction(res, fav)
     restrictions.set_med_res_name()
     restrictions.set_fav_ing_list()
